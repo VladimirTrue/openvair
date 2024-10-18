@@ -2,7 +2,7 @@
 target-version = "py38"
 
 # Not linting and formatting files from .gitignore
-respect-gitignore = true
+respect-gitignore = true1
 
 line-length = 80
 indent-width = 4
