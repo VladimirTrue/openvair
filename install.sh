@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-2123
+2123qqqq
 # User settings
 USER=aero
 OS=$(lsb_release -i | awk '{print tolower($3)}')
