@@ -128,15 +128,17 @@ merge_into_local(){
     local operation='merge_into_local'
 
     log $operation "INFO" "Merge remote branches from $remote, to local"
+    sleep 5
     for local_branch in $(git branch --list | sed 's/\*//'); do
         local remote_branch=$remote/$local_branch
-        
+    log $operation "INFO" "current remote branch $remote_branch, to local"
         if git checkout $local_branch; then
             # Проверка на дивергенцию ветки
             if git status | grep -q "have diverged"; then
                 log $operation "ERROR" "Branch '$local_branch' and '$remote_branch' have diverged. Manual intervention required."
                 branch_status["$local_branch,status"]="ERROR"
                 branch_status["$local_branch,message"]="Branch diverged. Manual merge required."
+                sleep 5
                 continue
             fi
 
@@ -146,10 +148,12 @@ merge_into_local(){
 
                 log $operation "INFO" "merging $remote_branch to $local_branch"
                 # выполнение мерджа
+                sleep 5
                 if git merge $remote_branch; then
                     log $operation "INFO" "SUCCESS merging"
                     branch_status["$local_branch,status"]="OK"
                     branch_status["$local_branch,message"]="Successfully merged"
+                    sleep 5
                 else
                     log $operation "ERROR" "ERROR Нужно решить конфликт руками"
                     branch_status["$local_branch,status"]="ERROR"
@@ -158,10 +162,12 @@ merge_into_local(){
                     # Откатываем мердж для продолжения работы с другими ветками
                     log $operation "INFO" "Aborting merge due to conflict"
                     git merge --abort
+                    sleep 5
                     continue
                 fi
             else
                 log $operation "INFO" "Remote branch '$local_branch' does not exist on '$remote'"
+                sleep 5
             fi
         else
             log $operation "ERROR" "ERROR while checkout to branch $local_branch"
