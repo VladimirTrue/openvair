@@ -15,7 +15,8 @@
 # https://docs.gitlab.com/ee/development/cicd/templates.html
 # This specific template is located at:
 # https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Getting-Started.gitlab-ci.yml
-
+variables:
+  GIT_STRATEGY: clone
 stages:          # List of stages for jobs, and their order of execution
   - build
 
@@ -32,6 +33,4 @@ build-job:       # This job runs in the build stage, which runs first.
     - echo COMPLETE
     - sleep 10
     - echo "Compile complete."
-    - git bracnh -a
-    - sleep 5
 
