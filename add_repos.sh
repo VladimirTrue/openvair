@@ -22,6 +22,10 @@ whoami
 pwd
 cat ~/.ssh/id_rsa.pub
 git remote show
+echo
+
+git branch -a
+
 declare -A branch_status
 
 log(){
