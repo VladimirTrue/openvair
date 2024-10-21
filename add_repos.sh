@@ -4,9 +4,17 @@ GITLAB="origin"
 GITLAB_ADDR="192.168.122.69"
 GITLAB_SSH="git@192.168.122.69:Biba/openvair.git"
 
+echo $GITLAB
+echo $GITLAB_ADDR
+echo $GITLAB_SSH
+
 GITHUB="github"
 GITHUB_ADDR="github.com"
 GITHUB_SSH="git@github.com:VladimirTrue/openvair.git"
+
+echo $GITHUB
+echo $GITHUB_ADDR
+echo $GITHUB_SSH
 
 declare -A branch_status
 
