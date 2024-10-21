@@ -39,7 +39,7 @@ log(){
     printf "[%s] - %-5s %-25s: %s\n" "$timestamp" "$status" "$operation" "$message"
     # printf '{"timestamp": "%s", "level": "%s", "operation": "%s", "message": "%s"}\n' \
     #     "$timestamp" "$level" "$operation" "$message"
-
+    sleep 1
 }
 
 # Функция для добавления хоста в known_hosts
@@ -85,20 +85,15 @@ fetch_all_remotes(){
     local operation="fetch_all_remotes"
 
     log $operation  "INFO" "Выполняю fetch всех репозиториев"
-    sleep 5
     if git fetch --all; then
         log $operation "INFO" "fetch прошёл успешно"
         git branch -a
-        sleep 5
     else
         log $operation "ERROR" "Произошла ошибка при fetch"
         git branch -a
-        sleep 5
     fi
     log $operation  "INFO" "fetch выполнен"
     git branch -a
-    sleep 5
-
 }
 
 create_local_origin(){
@@ -144,7 +139,6 @@ merge_into_local(){
     local operation='merge_into_local'
 
     log $operation "INFO" "Merge remote branches from $remote, to local"
-    sleep 5
     for local_branch in $(git branch --list | sed 's/\*//'); do
         local remote_branch=$remote/$local_branch
     log $operation "INFO" "current remote branch $remote_branch, to local"
@@ -159,7 +153,6 @@ merge_into_local(){
                 branch_status["$local_branch,status"]="ERROR"
                 branch_status["$local_branch,message"]="Branch diverged. Manual merge required."
                 git branch -a
-                sleep 5
                 continue
             fi
 
@@ -169,14 +162,12 @@ merge_into_local(){
 
                 log $operation "INFO" "merging $remote_branch to $local_branch"
                 # выполнение мерджа
-                sleep 5
                 if git merge $remote_branch; then
                     log $operation "INFO" "SUCCESS merging"
                     git branch -a
                     branch_status["$local_branch,status"]="OK"
                     branch_status["$local_branch,message"]="Successfully merged"
                     git branch -a
-                    sleep 5
                 else
                     log $operation "ERROR" "ERROR Нужно решить конфликт руками"
                     branch_status["$local_branch,status"]="ERROR"
@@ -185,12 +176,10 @@ merge_into_local(){
                     # Откатываем мердж для продолжения работы с другими ветками
                     log $operation "INFO" "Aborting merge due to conflict"
                     git merge --abort
-                    sleep 5
                     continue
                 fi
             else
                 log $operation "INFO" "Remote branch '$local_branch' does not exist on '$remote'"
-                sleep 5
             fi
         else
             log $operation "ERROR" "ERROR while checkout to branch $local_branch"
@@ -221,11 +210,9 @@ check_for_errors() {
 
     if [ "$error_found" = true ]; then
         log $operation "ERROR" "Errors were found in one or more branches. Exiting with error."
-        sleep 5
         exit 1  # Завершаем скрипт с кодом ошибки
     else
         log $operation "INFO" "No errors found. Exiting successfully."
-        sleep 5
         exit 0  # Завершаем скрипт без ошибок
     fi
 }
@@ -280,6 +267,5 @@ merge_into_local "$GITHUB"
 log "RESULTS" "INFO" "Итоги обработки веток:"
 # Выводим результат в формате JSON
 to_json
-sleep 5
 check_for_errors
 
