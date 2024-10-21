@@ -197,9 +197,11 @@ check_for_errors() {
 
     if [ "$error_found" = true ]; then
         log $operation "ERROR" "Errors were found in one or more branches. Exiting with error."
+        sleep 5
         exit 1  # Завершаем скрипт с кодом ошибки
     else
         log $operation "INFO" "No errors found. Exiting successfully."
+        sleep 5
         exit 0  # Завершаем скрипт без ошибок
     fi
 }
