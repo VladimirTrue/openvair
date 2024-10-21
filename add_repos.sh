@@ -56,6 +56,8 @@ check_and_add_remote() {
     local REMOTE_SSH=$2
     local operation="check_and_add_remote"
 
+    git remote remove $REMOTE_NAME
+
     # Проверяем, добавлен ли удалённый репозиторий
     if git remote get-url "$REMOTE_NAME" &> /dev/null; then
         log $operation "INFO" "Удалённый репозиторий '$REMOTE_NAME' уже добавлен."
