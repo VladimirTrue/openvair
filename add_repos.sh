@@ -20,7 +20,7 @@ echo
 
 whoami
 
-sudo cat ~/.ssh/id_rsa.pub
+cat ~/.ssh/id_rsa.pub
 
 declare -A branch_status
 
