@@ -85,11 +85,13 @@ fetch_all_remotes(){
     local operation="fetch_all_remotes"
 
     log $operation  "INFO" "Выполняю fetch всех репозиториев"
-    if git fetch --all || echo ERROR | sleep 5; then
+    if git fetch --all; then
         log $operation "INFO" "fetch прошёл успешно"
     else
         log $operation "ERROR" "Произошла ошибка при fetch"
     fi
+    log $operation  "INFO" "fetch выполнен"
+
 }
 
 create_local_origin(){
@@ -244,3 +246,5 @@ log "RESULTS" "INFO" "Итоги обработки веток:"
 to_json
 
 check_for_errors
+
+sleep 10
