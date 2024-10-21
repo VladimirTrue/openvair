@@ -20,6 +20,8 @@ echo
 
 whoami
 
+sudo cat ~/.ssh/id_rsa.pub
+
 declare -A branch_status
 
 log(){
