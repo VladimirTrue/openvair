@@ -32,4 +32,6 @@ build-job:       # This job runs in the build stage, which runs first.
     - echo COMPLETE
     - sleep 10
     - echo "Compile complete."
+    - git bracnh -a
+    - sleep 5
 
