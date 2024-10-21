@@ -16,6 +16,10 @@ echo $GITHUB
 echo $GITHUB_ADDR
 echo $GITHUB_SSH
 
+echo 
+
+echo whoami
+
 declare -A branch_status
 
 log(){
