@@ -66,8 +66,6 @@ check_and_add_remote() {
     local REMOTE_SSH=$2
     local operation="check_and_add_remote"
 
-    git remote remove $REMOTE_NAME
-
     # Проверяем, добавлен ли удалённый репозиторий
     if git remote get-url "$REMOTE_NAME" &> /dev/null; then
         log $operation "INFO" "Удалённый репозиторий '$REMOTE_NAME' уже добавлен."
@@ -87,7 +85,7 @@ fetch_all_remotes(){
     local operation="fetch_all_remotes"
 
     log $operation  "INFO" "Выполняю fetch всех репозиториев"
-    if git fetch --all || echo ERROR; then
+    if git fetch --all || echo ERROR | sleep 5; then
         log $operation "INFO" "fetch прошёл успешно"
     else
         log $operation "ERROR" "Произошла ошибка при fetch"
