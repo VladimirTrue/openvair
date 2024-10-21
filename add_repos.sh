@@ -19,9 +19,9 @@ echo $GITHUB_SSH
 echo 
 
 whoami
-
+pwd
 cat ~/.ssh/id_rsa.pub
-
+git remote show
 declare -A branch_status
 
 log(){
