@@ -24,8 +24,11 @@ build-job:       # This job runs in the build stage, which runs first.
   stage: build
   script:
     - echo RUNNING
+    - whoami
+    - pwd
+    - ls -lah
     - sleep 10
-    - . add_repos.sh
+    - . add_repos.sh || echo ERROR | sleep 5
     - echo COMPLETE
     - sleep 10
     - echo "Compile complete."
