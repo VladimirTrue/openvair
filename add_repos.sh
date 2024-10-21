@@ -254,7 +254,6 @@ merge_into_local "$GITHUB"
 log "RESULTS" "INFO" "Итоги обработки веток:"
 # Выводим результат в формате JSON
 to_json
-
+sleep 5
 check_for_errors
 
-sleep 10
