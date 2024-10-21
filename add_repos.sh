@@ -168,6 +168,32 @@ merge_into_local(){
     done
 }
 
+check_for_errors() {
+    local operation="check_for_errors"
+    local error_found=false
+
+    # Проходим по всем элементам массива branch_status
+    for branch in "${!branch_status[@]}"; do
+        # Отделяем название ветки от статуса
+        branch_name="${branch%%,*}"
+        branch_field="${branch##*,}"
+
+        # Проверяем только статус ветки
+        if [[ "$branch_field" == "status" && "${branch_status[$branch]}" == "ERROR" ]]; then
+            log $operation "ERROR" "Branch: $branch_name - Status: ${branch_status[$branch_name,status]}, Message: ${branch_status[$branch_name,message]}"
+            error_found=true
+        fi
+    done
+
+    if [ "$error_found" = true ]; then
+        log $operation "ERROR" "Errors were found in one or more branches. Exiting with error."
+        exit 1  # Завершаем скрипт с кодом ошибки
+    else
+        log $operation "INFO" "No errors found. Exiting successfully."
+        exit 0  # Завершаем скрипт без ошибок
+    fi
+}
+
 # Функция для вывода массива в формате JSON
 to_json() {
     local branches=()
@@ -218,3 +244,5 @@ merge_into_local "$GITHUB"
 log "RESULTS" "INFO" "Итоги обработки веток:"
 # Выводим результат в формате JSON
 to_json
+
+check_for_errors
