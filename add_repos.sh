@@ -18,7 +18,7 @@ echo $GITHUB_SSH
 
 echo 
 
-echo whoami
+whoami
 
 declare -A branch_status
 
