@@ -24,8 +24,9 @@ build-job:       # This job runs in the build stage, which runs first.
   stage: build
   script:
     - echo RUNNING
-    - echo whoami
-    - echo pwd
+    - whoami
+    - pwd
+    - ls -lah
     - sleep 10
     - . add_repos.sh
     - echo COMPLETE
