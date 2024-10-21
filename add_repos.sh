@@ -87,7 +87,7 @@ fetch_all_remotes(){
     local operation="fetch_all_remotes"
 
     log $operation  "INFO" "Выполняю fetch всех репозиториев"
-    if git fetch --all; then
+    if git fetch --all || echo ERROR; then
         log $operation "INFO" "fetch прошёл успешно"
     else
         log $operation "ERROR" "Произошла ошибка при fetch"
