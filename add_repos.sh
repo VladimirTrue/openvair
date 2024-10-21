@@ -88,12 +88,15 @@ fetch_all_remotes(){
     sleep 5
     if git fetch --all; then
         log $operation "INFO" "fetch прошёл успешно"
+        git branch -a
         sleep 5
     else
         log $operation "ERROR" "Произошла ошибка при fetch"
+        git branch -a
         sleep 5
     fi
     log $operation  "INFO" "fetch выполнен"
+    git branch -a
     sleep 5
 
 }
@@ -104,19 +107,32 @@ create_local_origin(){
 
     for branch in $(git branch -r | grep $REMOTE_NAME'/' | grep -v 'HEAD' | sed 's/'$REMOTE_NAME'\///'); do
         log $operation "INFO" "PROCCESS branch $branch for $REMOTE_NAME"
+        git branch -a
         if git rev-parse --verify $branch >/dev/null 2>&1; then
+            git branch -a
             log $operation "INFO" "SKIP: Local branch $branch already exists"
             branch_status["$branch,status"]="OK"
             branch_status["$branch,message"]="Not for merge"
+            git branch -a
+
         else
             if git checkout -b $branch $REMOTE_NAME/$branch; then
                 log $operation "INFO" "$branch copied to local"
+                git branch -a
+
                 branch_status["$branch,status"]="OK"
                 branch_status["$branch,message"]="Branch copied to local"
+
+                git branch -a
+
             else
+                git branch -a
+
                 log $operation "ERROR" "$branch not copied"
                 branch_status["$branch,status"]="ERROR"
                 branch_status["$branch,message"]="Failed to copy branch"
+                git branch -a
+
                 continue
             fi
         fi
@@ -133,11 +149,16 @@ merge_into_local(){
         local remote_branch=$remote/$local_branch
     log $operation "INFO" "current remote branch $remote_branch, to local"
         if git checkout $local_branch; then
+            git branch -a
+
             # Проверка на дивергенцию ветки
             if git status | grep -q "have diverged"; then
                 log $operation "ERROR" "Branch '$local_branch' and '$remote_branch' have diverged. Manual intervention required."
+                git branch -a
+
                 branch_status["$local_branch,status"]="ERROR"
                 branch_status["$local_branch,message"]="Branch diverged. Manual merge required."
+                git branch -a
                 sleep 5
                 continue
             fi
@@ -151,8 +172,10 @@ merge_into_local(){
                 sleep 5
                 if git merge $remote_branch; then
                     log $operation "INFO" "SUCCESS merging"
+                    git branch -a
                     branch_status["$local_branch,status"]="OK"
                     branch_status["$local_branch,message"]="Successfully merged"
+                    git branch -a
                     sleep 5
                 else
                     log $operation "ERROR" "ERROR Нужно решить конфликт руками"
@@ -171,6 +194,7 @@ merge_into_local(){
             fi
         else
             log $operation "ERROR" "ERROR while checkout to branch $local_branch"
+            git branch -a
             branch_status["$local_branch,status"]="ERROR"
             branch_status["$local_branch,message"]="Failed to checkout branch"
             continue
